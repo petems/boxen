@@ -26,6 +26,15 @@ module Boxen
       runner.run
     end
 
+    def ci_run
+      if flags.help?
+        puts flags
+        exit
+      end
+
+      runner.run
+    end
+
     # Run Boxen by wiring together the command-line flags, config,
     # preflights, Puppet execution, and postflights. Returns Puppet's
     # exit code.
@@ -45,7 +54,7 @@ module Boxen
 
       # Save the config for Puppet (and next time).
 
-      Boxen::Config.save config unless ENV['CI_MODE']
+      Boxen::Config.save config
 
       # Make the magic happen.
 

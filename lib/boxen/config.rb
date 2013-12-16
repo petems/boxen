@@ -70,7 +70,7 @@ module Boxen
       end
 
       keychain          = Boxen::Keychain.new config.user
-      keychain.token    = config.token
+      keychain.token    = config.token unless ENV['CI_MODE']
 
       config
     end
