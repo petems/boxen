@@ -66,21 +66,25 @@ class Boxen::Preflight::Creds < Boxen::Preflight
 
   def run
     fetch_login_and_password
-    tokens = get_tokens
 
-    unless auth = tokens.detect { |a| a.note == "Boxen" }
-      auth = tmp_api.create_authorization \
+    unless ENV['CI_MODE']
+
+      tokens = get_tokens
+
+      unless auth = tokens.detect { |a| a.note == "Boxen" }
+        auth = tmp_api.create_authorization \
         :note => "Boxen",
         :scopes => %w(repo user),
         :headers => headers
-    end
+      end
 
-    config.token = auth.token
+      config.token = auth.token
 
-    unless ok?
-      puts
-      abort "Something went terribly wrong.",
+      unless ok?
+        puts
+        abort "Something went terribly wrong.",
         "I was able to get your OAuth token, but was unable to use it."
+      end
     end
   end
 
