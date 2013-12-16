@@ -45,7 +45,7 @@ module Boxen
 
       # Save the config for Puppet (and next time).
 
-      Boxen::Config.save config
+      Boxen::Config.save config unless ENV['CI_MODE']
 
       # Make the magic happen.
 
